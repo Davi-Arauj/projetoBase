@@ -1,0 +1,48 @@
+{
+    "metricas": true,
+    "consulta_tempo_limite": 1,
+    "cookie_nome": "NovoRevan",
+    "secrets": ["developdenkjednkjfn"],
+    "secret": "developdenkjednkjfn",
+    "permissao_base": "github.com/projetoBase",
+    "permission_chave": "",
+    "notificacao_url": "http://192.168.111.10:6060",
+    "autenticacao_index": "auth",
+    "intervalo_noficacao": 5,
+    "bancos_dados": [
+        {
+            "nick": "academia",
+            "name": "academia",
+            "username": "root",
+            "password": "secret",
+            "hostname": "localhost",
+            "port": "5432",
+            "max_conn": 5,
+            "max_idle": 1,
+            "read_only": false,
+            "main": true,
+            "transaction_timeout": 1
+        },
+        {
+            "nick": "academia",
+            "name": "academia",
+            "username": "root",
+            "password": "secret",
+            "hostname": "localhost",
+            "port": "5432",
+            "max_conn": 5,
+            "max_idle": 1,
+            "read_only": true,
+            "main": false,
+            "transaction_timeout": 1
+        }
+    ],
+    "diretorio_log_acesso": "/var/log/academia/access.log",
+    "diretorio_log_erro": "/var/log/academia/error.log",
+    "diretorio_upload": "/var/local/academia/upload",
+    "producao": false,
+    "upload_tamanho_max": 16777216,
+    "heartbeat_endpoint": "http://192.168.111.12:9200/health_dev/_doc",
+    "heartbeat_intervalo": 60,
+    "redes_permitidas": []
+}
