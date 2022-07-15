@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS t_produtos;
+DROP TABLE IF EXISTS t_clientes;

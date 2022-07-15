@@ -184,6 +184,7 @@ func Remover(ctx context.Context, codigoBarras int64) (err error) {
 	return
 }
 
+// Total contém a lógica de negócio para buscar o total de uma listagem
 func Total(ctx context.Context, p *util.ParametrosRequisicao) (res *ResPag, err error) {
 	msgErrPadrao := "Erro ao listar um produto"
 

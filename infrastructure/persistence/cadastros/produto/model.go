@@ -2,7 +2,7 @@ package produto
 
 import "time"
 
-// Res modela uma resposta para listagem e busca de produtos
+// Produto modela uma resposta para listagem e busca de produtos
 type Produto struct {
 	ID              *int64     `sql:"id" codinome:"id"`
 	DataCriacao     *time.Time `sql:"data_criacao::TIMESTAMPTZ" codinome:"data_criacao"`
@@ -19,7 +19,7 @@ type Produto struct {
 	ScatCod         *int64     `sql:"subcategoria_id" codinome:"subcategoria_id"`
 }
 
-// ResPag modela uma lista de respostas com suporte para paginação dos produtos na listagem
+// ProdutoPag modela uma lista de respostas com suporte para paginação dos produtos na listagem
 type ProdutoPag struct {
 	Dados []Produto
 	Prox  *bool

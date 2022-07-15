@@ -1,0 +1,315 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Fri Jul 15 11:20:36 2022
+
+# Variables
+
+# environment
+GO111MODULE = on
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+SSH_AGENT_LAUNCHER = gnome-keyring
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1ac426ea-f649-47ec-b145-c4afd57a0bde.sock
+# environment
+VSCODE_CWD = /home/davi
+# environment
+NVM_DIR = /home/davi/.nvm
+# environment
+AUTH_SECRETS = developdenkjednkjfn
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# environment
+GOPATH = /home/davi/go
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+CORS_ALLOWED_ORIGINS = *
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/davi/go/src/github.com/projetoBase
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+PS1 = \u@\h\[\033[01;34m\] \w\[\033[0;32m\]$(__git_ps1 " (%s)")\[\033[01;34m\]$\[\033[00m\] 
+# environment
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+NVM_INC = /home/davi/.nvm/versions/node/v10.22.1/include/node
+# environment
+VSCODE_CODE_CACHE_PATH = /home/davi/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.KOSRP1
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# makefile
+MAKEFLAGS = pqrR
+# environment
+REVAN_RW_DATABASE_URI = postgres://sso:dev_SSO0001@172.16.30.6:5432/netmanager_desenvolvimento?sslmode=disable
+# environment
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=b270ab7e35e7730d2035f5b862d1497e
+# makefile
+CURDIR := /home/davi/go/src/github.com/projetoBase
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+NVM_BIN = /home/davi/.nvm/versions/node/v10.22.1/bin
+# environment
+WAYLAND_DISPLAY = wayland-0
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# environment
+AUTH_RECAPTCHA_SECRET = 6LdxgFsUAAAAAKKDtpcl1WWYyPCTaJQ5EsjOvWbb
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 7975
+# environment
+DIRBASE = /home/davi
+# environment
+XDG_SESSION_TYPE = wayland
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+SESSION_MANAGER = local/davi-OptiPlex-3070:@/tmp/.ICE-unix/2247,unix/davi-OptiPlex-3070:/tmp/.ICE-unix/2247
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=b270ab7e35e7730d2035f5b862d1497e
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"195456cb6bc5e7dd989215cd334fb359.pt-br","_translationsConfigFile":"/home/davi/.config/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/tcf.json","_cacheRoot":"/home/davi/.config/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br","_resolvedLanguagePackCoreLocation":"/home/davi/.config/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/30d9c6cd9483b2cc586687151bcbcd635f373630","_corruptedFile":"/home/davi/.config/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/corrupted.info","_languagePackSupport":true}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
+SHLVL = 0
+# environment
+MAKELEVEL := 0
+# environment
+IM_CONFIG_CHECK_ENV = 1
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /usr/local/go/bin:/home/davi/.nvm/versions/node/v10.22.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/davi/go/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = pt_BR:pt:en
+# automatic
+^F = $(notdir $^)
+# environment
+DIRMISC = /home/davi/go/src/estoque/server/pdfgenerator/misc
+# environment
+GOROOT = /usr/local/go
+# environment
+INVOCATION_ID = ef496222d4b641d6843305709654c6ec
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+USERNAME = davi
+# environment
+GNOME_SETUP_DISPLAY = :1
+# environment
+GOPRIVATE = github.com/Brisanet/Bart,github.com/Brisanet/sso
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# automatic
+?F = $(notdir $?)
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# environment
+LS_COLORS = 
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = ubuntu
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = davi
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+# makefile
+.DEFAULT_GOAL := 
+# environment
+SYSTEMD_EXEC_PID = 2247
+# environment
+DISPLAY = :0
+# environment
+USER = davi
+# environment
+GTK_MODULES = gail:atk-bridge
+# default
+MAKE_VERSION := 4.3
+# environment
+MANAGERPID = 2028
+# environment
+HEARTBEAT_ENDPOINT = http://192.168.111.12:9200/health_dev/_doc
+# environment
+DBUS_STARTER_BUS_TYPE = session
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 7975
+# environment
+_ = /usr/share/code/code
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+NVM_CD_FLAGS = 
+# environment
+JOURNAL_STREAM = 8:33198
+# environment
+GOMODCACHE = /home/davi/go/pkg/mod
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/davi
+# environment
+QT_IM_MODULE = ibus
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-cbca4718-1.68.1-main.sock
+# environment
+IM_CONFIG_PHASE = 1
+# environment
+GOPROXY = https://proxy.golang.org,direct
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+SERVICE_PDF_URI = http://localhost:9500
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+GDMSESSION = ubuntu
+# variable set hash-table stats:
+# Load=122/1024=12%, Rehash=0, Collisions=6/151=4%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 2056, inode 18097657): 22 files, no impossibilities.
+
+# 22 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-07-15 11:20:23.60214852
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=4/1024=0%, Rehash=0, Collisions=0/14=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 27 / storage = 246 B / avg = 9 B
+# current buf: size = 8162 B / used = 246 B / count = 27 / avg = 9 B
+
+# strcache performance: lookups = 31 / hit rate = 12%
+# hash-table stats:
+# Load=27/8192=0%, Rehash=0, Collisions=0/31=0%
+# Finished Make data base on Fri Jul 15 11:20:36 2022
+ 
+
+ 

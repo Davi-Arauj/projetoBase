@@ -9,6 +9,7 @@ import (
 	"github.com/projetoBase/util"
 )
 
+// listar - listagem de produtos
 func listar(c *gin.Context) {
 
 	p, err := util.ParseParams(c)
@@ -25,6 +26,7 @@ func listar(c *gin.Context) {
 	c.JSON(200, res)
 }
 
+// buscar - busca um produto usando como parametro o codigo de barras
 func buscar(c *gin.Context) {
 	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
 
@@ -36,6 +38,7 @@ func buscar(c *gin.Context) {
 	c.JSON(200, res)
 }
 
+// adicionar - adiciona um produto
 func adicionar(c *gin.Context) {
 	var req produto.Req
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -52,6 +55,7 @@ func adicionar(c *gin.Context) {
 	c.JSON(201, id)
 }
 
+// alterar - altera um produto
 func alterar(c *gin.Context) {
 	var req produto.Req
 
@@ -73,6 +77,7 @@ func alterar(c *gin.Context) {
 	c.JSON(204, nil)
 }
 
+// remover - remove um prodtuo
 func remover(c *gin.Context) {
 	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
 	if err != nil {
@@ -87,7 +92,7 @@ func remover(c *gin.Context) {
 	c.JSON(204, nil)
 }
 
-
+// total - busca o total de produtos em uma listagem
 func total(c *gin.Context) {
 
 	p, err := util.ParseParams(c)
