@@ -121,13 +121,11 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 		p            util.ParametrosRequisicao
 		msgErrPadrao = "Erro ao alterar produto"
 	)
-
 	tx, err := database.NovaTransacao(ctx, false)
 	if err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 	defer tx.Rollback()
-
 	repo := produto.ObterRepo(tx)
 
 	dados, err := repo.ConverterParaProduto(req)
@@ -139,15 +137,16 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 	// devemos verificar se já existe um registro com o mesmo codigo de barras
 	p.Filtros = make(map[string][]string)
 	p.Filtros["codigo_barras"] = []string{strconv.FormatInt(*req.CodigoBarras, 10)}
-	p.Total = true
 
 	lista, err := repo.Listar(&p)
 	if err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 
-	if lista.Total != nil && *lista.Total > 0 {
-		return oops.NovoErr("Já existe um produto com esse codigo de barras!")
+	if len(lista.Dados) > 0 {
+		if lista.Dados[0].CodigoBarras != &codigoBarras{
+			return oops.NovoErr("Já existe um produto com esse codigo de barras!")
+		}
 	}
 
 	if err = repo.Alterar(dados); err != nil {

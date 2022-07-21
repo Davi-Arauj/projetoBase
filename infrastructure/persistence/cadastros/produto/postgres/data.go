@@ -28,7 +28,7 @@ func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoP
 
 	consultaPrevia := pg.DB.Builder.
 		Select(campos...).
-		From("t_produtos")
+		From("t_produto")
 
 	clausulaWhere := p.CriarFiltros(consultaPrevia, map[string]util.Filtro{
 		"codigo_barras": util.CriarFiltros("codigo_barras = ?::BIGINT", util.FlagFiltroEq),
@@ -51,7 +51,7 @@ func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoP
 func (pg *PGProduto) Buscar(req *produto.Produto) (err error) {
 	if err = pg.DB.Builder.
 		Select(`id, codigo_barras, nome,descricao,endereco_foto,valor_pago,valor_venda,quantidade,unidade_id,categoria_id,subcategoria_id,data_criacao,data_atualizacao`).
-		From(`t_produtos`).
+		From(`t_produto`).
 		Where(squirrel.Eq{
 			"codigo_barras": req.CodigoBarras,
 		}).
@@ -71,14 +71,13 @@ func (pg *PGProduto) Adicionar(req *produto.Produto) (err error) {
 	}
 
 	if err = pg.DB.Builder.
-		Insert("t_produtos").
+		Insert("t_produto").
 		Columns(cols...).
 		Values(vals...).
 		Suffix(`RETURNING "id"`).
 		Scan(&req.ID); err != nil {
 		return oops.Err(err)
 	}
-
 	return
 }
 
@@ -95,7 +94,7 @@ func (pg *PGProduto) Alterar(req *produto.Produto) (err error) {
 	}
 
 	if err = pg.DB.Builder.
-		Update("t_produtos").
+		Update("t_produto").
 		SetMap(valores).
 		Where(squirrel.Eq{
 			"codigo_barras": req.CodigoBarras,
@@ -104,14 +103,13 @@ func (pg *PGProduto) Alterar(req *produto.Produto) (err error) {
 		Scan(new(string)); err != nil {
 		return oops.Err(err)
 	}
-
 	return
 }
 
 // Remover remove um produto no banco de dados do postgres
 func (pg *PGProduto) Remover(codigoBarras int64) (err error) {
 	resultado, err := pg.DB.Builder.
-		Delete("t_produtos").
+		Delete("t_produto").
 		Where(squirrel.Eq{
 			"codigo_barras": codigoBarras,
 		}).Exec()

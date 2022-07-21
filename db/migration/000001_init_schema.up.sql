@@ -68,10 +68,10 @@ CREATE TABLE "t_teste" (
 -- create trigger updated_produto before
 -- update
 --     on
---     public.t_produtos for each row execute function updated_datetime();
+--     public.t_produto for each row execute function updated_datetime();
     
 --    create trigger updated_cliente before
 -- update
 --     on
---     public.t_clientes for each row execute function updated_datetime();
+--     public.t_cliente for each row execute function updated_datetime();
 
