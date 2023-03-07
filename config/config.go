@@ -13,10 +13,10 @@ var config *Config
 // CarregarConfiguracao carrega as configurações através do arquivo definido
 func CarregarConfiguracao() {
 	path := "/etc/academia/config.json"
-	if val, set := os.LookupEnv("PLAYGROUND_CONFIG"); set && val != "" {
+	if val, set := os.LookupEnv("ACADEMIA_CONFIG"); set && val != "" {
 		path = val
 	} else {
-		log.Println("variável de ambiente `PLAYGROUND_CONFIG` não está definida, usado diretorio: ", path)
+		log.Println("variável de ambiente `ACADEMIA_CONFIG` não está definida, usado diretorio: ", path)
 	}
 
 	raw, err := ioutil.ReadFile(path)

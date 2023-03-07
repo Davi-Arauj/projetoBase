@@ -1,9 +1,9 @@
 postgres:
-	sudo docker run --name gomaster -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:latest
+	sudo docker run --name academia_back -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:latest
 createdb:
-	sudo docker exec -it gomaster createdb --username=root --owner=root academia
+	sudo docker exec -it academia_back createdb --username=root --owner=root academia
 dropdb:
-	sudo docker exec -it gomaster dropdb academia
+	sudo docker exec -it academia_back dropdb academia
 migrateup:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/academia?sslmode=disable" -verbose up
 migratedown:
