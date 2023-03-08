@@ -1,16 +1,15 @@
-package produto
+package venda
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/projetoBase/application/cadastros/produto"
+	"github.com/projetoBase/application/cadastros/venda"
 	"github.com/projetoBase/oops"
 	"github.com/projetoBase/util"
 )
 
-// listar - listagem de produtos
+// listar - listagem de vendas
 func listar(c *gin.Context) {
 
 	p, err := util.ParseParams(c)
@@ -18,47 +17,47 @@ func listar(c *gin.Context) {
 		oops.DefinirErro(err, c)
 		return
 	}
-	res, err := produto.Listar(c, &p)
+	res, err := venda.Listar(c, &p)
 	if err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(200, res)
 }
 
-// buscar - busca um produto usando como parametro o codigo de barras
+// buscar - busca um venda usando como parametro o codigo de barras
 func buscar(c *gin.Context) {
 	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
 
-	res, err := produto.Buscar(c, int64(codigoBarras))
+	res, err := venda.Buscar(c, int64(codigoBarras))
 	if err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
-	c.JSON(http.StatusOK, res)
+	c.JSON(200, res)
 }
 
-// adicionar - adiciona um produto
+// adicionar - adiciona um venda
 func adicionar(c *gin.Context) {
-	var req produto.Req
+	var req venda.Req
 	if err := c.ShouldBindJSON(&req); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	id, err := produto.Adicionar(c, &req)
+	id, err := venda.Adicionar(c, &req)
 	if err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	c.JSON(http.StatusCreated, id)
+	c.JSON(201, id)
 }
 
-// alterar - altera um produto
+// alterar - altera um venda
 func alterar(c *gin.Context) {
-	var req produto.Req
+	var req venda.Req
 
 	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
 	if err != nil {
@@ -70,12 +69,12 @@ func alterar(c *gin.Context) {
 		return
 	}
 
-	if err := produto.Alterar(c, int64(codigoBarras), &req); err != nil {
+	if err := venda.Alterar(c, int64(codigoBarras), &req); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(204, nil)
 }
 
 // remover - remove um prodtuo
@@ -85,15 +84,15 @@ func remover(c *gin.Context) {
 		oops.DefinirErro(err, c)
 		return
 	}
-	if err := produto.Remover(c, int64(codigoBarras)); err != nil {
+	if err := venda.Remover(c, int64(codigoBarras)); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(204, nil)
 }
 
-// total - busca o total de produtos em uma listagem
+// total - busca o total de vendas em uma listagem
 func total(c *gin.Context) {
 
 	p, err := util.ParseParams(c)
@@ -101,11 +100,11 @@ func total(c *gin.Context) {
 		oops.DefinirErro(err, c)
 		return
 	}
-	res, err := produto.Total(c, &p)
+	res, err := venda.Total(c, &p)
 	if err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	c.JSON(http.StatusNoContent, res)
+	c.JSON(200, res)
 }

@@ -46,23 +46,6 @@ CREATE TABLE IF NOT EXISTS "t_usuario" (
 
 
 
-
--- CREATE TABLE "t_teste" (
--- 	"id" bigserial PRIMARY KEY,
--- 	"nome" varchar NOT NULL,
--- 	"email" varchar NOT NULL,
---     "senha" varchar NOT NULL,
---     "hash" varchar NOT NULL,
--- 	"cpf" varchar NOT NULL,
--- 	"fone" bigint NOT NULL,
--- 	"foto" varchar NOT NULL,
--- 	"sexo" varchar NOT NULL,
--- 	"data_nascimento" timestamp NOT NULL,
--- 	"data_criacao" timestamptz NOT NULL DEFAULT (now()),
--- 	"data_atualizacao" timestamptz NULL
--- );
-
-
 -- Table Triggers
 -- create trigger updated_produto before
 -- update
