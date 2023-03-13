@@ -47,22 +47,6 @@ func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoP
 	return
 }
 
-// Buscar busca um novo produto no banco de dados do postgres
-func (pg *PGProduto) Buscar(req *produto.Produto) (err error) {
-	if err = pg.DB.Builder.
-		Select(`id, codigo_barras, nome,descricao,endereco_foto,valor_pago,valor_venda,quantidade,unidade_id,categoria_id,subcategoria_id,data_criacao,data_atualizacao`).
-		From(`t_produto`).
-		Where(squirrel.Eq{
-			"codigo_barras": req.CodigoBarras,
-		}).
-		Scan(
-			&req.ID, &req.CodigoBarras, &req.Nome, &req.Descricao, &req.Foto, &req.Valorpago, &req.Valorvenda, &req.Qtde, &req.UndCod, &req.CatCod, &req.ScatCod, &req.DataCriacao, &req.DataAtualizacao,
-		); err != nil {
-		return oops.Err(err)
-	}
-	return
-}
-
 // Adicionar adiciona um novo produto ao banco de dados do postgres
 func (pg *PGProduto) Adicionar(req *produto.Produto) (err error) {
 	cols, vals, err := util.FormatarInsertUpdate(req)

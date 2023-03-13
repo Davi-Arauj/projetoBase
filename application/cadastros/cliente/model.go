@@ -12,7 +12,7 @@ type Req struct {
 
 // Res modela uma resposta para listagem e busca de produtos
 type Res struct {
-	ID              *int64     `json:"id,omitempty" codinome:"id"`
+	ID              *string     `json:"id,omitempty" codinome:"id"`
 	Nome            *string    `json:"nome" binding:"required,gte=1" minLength:"1" codinome:"nome"`
 	Email           *string    `json:"email" binding:"email" codinome:"email"`
 	Cpf             *string    `json:"cpf" binding:"required,gte=9" minLength:"9" codinome:"cpf"`

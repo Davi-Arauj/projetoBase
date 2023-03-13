@@ -1,0 +1,159 @@
+basePath: /v1
+definitions:
+  usuario.Req:
+    properties:
+      cpf:
+        type: string
+      data_atualizacao:
+        type: string
+      data_criacao:
+        type: string
+      email:
+        type: string
+      fone:
+        type: integer
+      nome:
+        minLength: 1
+        type: string
+      senha:
+        type: string
+    required:
+    - nome
+    type: object
+  usuario.Res:
+    properties:
+      cpf:
+        type: string
+      data_atualizacao:
+        type: string
+      data_criacao:
+        type: string
+      email:
+        type: string
+      fone:
+        type: integer
+      hash:
+        type: string
+      id:
+        type: integer
+      nome:
+        minLength: 1
+        type: string
+      senha:
+        type: string
+    required:
+    - nome
+    type: object
+  usuario.ResPag:
+    properties:
+      dados:
+        items:
+          $ref: '#/definitions/usuario.Res'
+        type: array
+      prox:
+        type: boolean
+      total:
+        type: integer
+    type: object
+host: localhost:9876
+info:
+  contact:
+    name: Brisanet
+  description: Serviço para sistema de testes
+  title: Sistema de Testes API
+  version: "1.0"
+paths:
+  /v2/usuario/{usuario_id}:
+    delete:
+      description: Remove um usuario
+      parameters:
+      - description: ID do usuario a ser removido
+        in: path
+        name: usuario_id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: nil
+      summary: Remove um usuario
+      tags:
+      - cadastros/usuario
+    put:
+      consumes:
+      - application/json
+      description: Altera um usuario dado o seu id e o corpo do novo usuario
+      parameters:
+      - description: ID do usuario a ser alterado
+        in: path
+        name: usuario_id
+        required: true
+        type: integer
+      - description: Dados do novo usuario
+        in: body
+        name: tag
+        required: true
+        schema:
+          $ref: '#/definitions/usuario.Req'
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: nil
+      summary: Altera um usuario
+      tags:
+      - cadastros/usuario
+  /v2/usuarios:
+    get:
+      description: Lista usuarios dados os seus devidos filtros
+      parameters:
+      - description: ID do usuario
+        in: query
+        name: id
+        type: string
+      - description: Nome do usuarios
+        in: query
+        name: nome
+        type: string
+      - description: Email do usuarios
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK. Prox define se existe ou não uma proxima pagina.
+          schema:
+            $ref: '#/definitions/usuario.ResPag'
+      summary: Lista usuarios
+      tags:
+      - cadastros/usuario
+    post:
+      consumes:
+      - application/json
+      description: Adiciona um novo usuario dado o corpo deste novo usuario
+      parameters:
+      - description: Dados do usuario
+        in: body
+        name: tag
+        required: true
+        schema:
+          $ref: '#/definitions/usuario.Req'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: id do novo usuario adicionado
+          schema:
+            type: string
+      summary: Adiciona um novo usuario
+      tags:
+      - cadastros/usuario
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -5,21 +5,21 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	"github.com/projetoBase/config/database"
-	"github.com/projetoBase/infrastructure/persistence/cadastros/produto"
+	"github.com/projetoBase/infrastructure/persistence/cadastros/usuario"
 	"github.com/projetoBase/oops"
 	"github.com/projetoBase/util"
 )
 
-// PGproduto é uma estrutura base para acesso aos metodos do banco postgres para manipulação de produtos
-type PGProduto struct {
+// PGUsuario é uma estrutura base para acesso aos metodos do banco postgres para manipulação de usuarios
+type PGUsuario struct {
 	DB *database.DBTransacao
 }
 
-// Listar lista de forma paginada os dados de produtos do banco postgres
-func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoPag, err error) {
-	var t produto.Produto
+// Listar lista de forma paginada os dados de usuarios do banco postgres
+func (pg *PGUsuario) Listar(p *util.ParametrosRequisicao) (res *usuario.UsuarioPag, err error) {
+	var t usuario.Usuario
 
-	res = new(produto.ProdutoPag)
+	res = new(usuario.UsuarioPag)
 
 	campos, _, err := p.ValidarCampos(&t)
 	if err != nil {
@@ -28,13 +28,14 @@ func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoP
 
 	consultaPrevia := pg.DB.Builder.
 		Select(campos...).
-		From("t_produto")
+		From("t_usuario")
 
 	clausulaWhere := p.CriarFiltros(consultaPrevia, map[string]util.Filtro{
-		"codigo_barras": util.CriarFiltros("codigo_barras = ?::BIGINT", util.FlagFiltroEq),
 		"nao_contem_id": util.CriarFiltros("id", util.FlagFiltroNotIn),
 		"nome":          util.CriarFiltros("lower(public.unaccent(nome)) LIKE lower('%'||public.unaccent(?)||'%')", util.FlagFiltroEq),
 		"nome_exato":    util.CriarFiltros("public.unaccent(nome) LIKE public.unaccent(?)", util.FlagFiltroEq),
+		"email":         util.CriarFiltros("email =?", util.FlagFiltroEq),
+		"id":            util.CriarFiltros("id =?", util.FlagFiltroEq),
 	})
 
 	dados, prox, total, err := util.ConfigurarPaginacao(p, &t, &clausulaWhere)
@@ -42,36 +43,20 @@ func (pg *PGProduto) Listar(p *util.ParametrosRequisicao) (res *produto.ProdutoP
 		return res, oops.Err(err)
 	}
 
-	res.Dados, res.Prox, res.Total = dados.([]produto.Produto), prox, total
+	res.Dados, res.Prox, res.Total = dados.([]usuario.Usuario), prox, total
 
 	return
 }
 
-// Buscar busca um novo produto no banco de dados do postgres
-func (pg *PGProduto) Buscar(req *produto.Produto) (err error) {
-	if err = pg.DB.Builder.
-		Select(`id, codigo_barras, nome,descricao,endereco_foto,valor_pago,valor_venda,quantidade,unidade_id,categoria_id,subcategoria_id,data_criacao,data_atualizacao`).
-		From(`t_produto`).
-		Where(squirrel.Eq{
-			"codigo_barras": req.CodigoBarras,
-		}).
-		Scan(
-			&req.ID, &req.CodigoBarras, &req.Nome, &req.Descricao, &req.Foto, &req.Valorpago, &req.Valorvenda, &req.Qtde, &req.UndCod, &req.CatCod, &req.ScatCod, &req.DataCriacao, &req.DataAtualizacao,
-		); err != nil {
-		return oops.Err(err)
-	}
-	return
-}
-
-// Adicionar adiciona um novo produto ao banco de dados do postgres
-func (pg *PGProduto) Adicionar(req *produto.Produto) (err error) {
+// Adicionar adiciona um novo usuario ao banco de dados do postgres
+func (pg *PGUsuario) Adicionar(req *usuario.Usuario) (err error) {
 	cols, vals, err := util.FormatarInsertUpdate(req)
 	if err != nil {
 		return oops.Err(err)
 	}
 
 	if err = pg.DB.Builder.
-		Insert("t_produto").
+		Insert("t_usuario").
 		Columns(cols...).
 		Values(vals...).
 		Suffix(`RETURNING "id"`).
@@ -81,8 +66,8 @@ func (pg *PGProduto) Adicionar(req *produto.Produto) (err error) {
 	return
 }
 
-// Alterar altera um produto no banco de dados do postgres
-func (pg *PGProduto) Alterar(req *produto.Produto) (err error) {
+// Alterar altera um usuario no banco de dados do postgres
+func (pg *PGUsuario) Alterar(req *usuario.Usuario) (err error) {
 	cols, vals, err := util.FormatarInsertUpdate(req)
 	if err != nil {
 		return oops.Err(err)
@@ -94,10 +79,10 @@ func (pg *PGProduto) Alterar(req *produto.Produto) (err error) {
 	}
 
 	if err = pg.DB.Builder.
-		Update("t_produto").
+		Update("t_usuario").
 		SetMap(valores).
 		Where(squirrel.Eq{
-			"codigo_barras": req.CodigoBarras,
+			"email": req.Email,
 		}).
 		Suffix(`RETURNING "id"`).
 		Scan(new(string)); err != nil {
@@ -106,12 +91,12 @@ func (pg *PGProduto) Alterar(req *produto.Produto) (err error) {
 	return
 }
 
-// Remover remove um produto no banco de dados do postgres
-func (pg *PGProduto) Remover(codigoBarras int64) (err error) {
+// Remover remove um usuario no banco de dados do postgres
+func (pg *PGUsuario) Remover(email string) (err error) {
 	resultado, err := pg.DB.Builder.
-		Delete("t_produto").
+		Delete("t_usuario").
 		Where(squirrel.Eq{
-			"codigo_barras": codigoBarras,
+			"email": email,
 		}).Exec()
 
 	if err != nil {

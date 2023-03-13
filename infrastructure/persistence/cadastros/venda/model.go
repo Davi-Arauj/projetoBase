@@ -4,7 +4,7 @@ import "time"
 
 // Venda modela uma resposta para listagem e busca de vendas
 type Venda struct {
-	ID              *int64     `sql:"id" codinome:"id"`
+	ID              *string     `sql:"id" codinome:"id"`
 	UsuarioID       *string    `sql:"usuario_id" codinome:"usuario_id"`
 	ClienteID       *string    `sql:"cliente_id" codinome:"cliente_id"`
 	DataCriacao     *time.Time `sql:"data_criacao" codinome:"data_criacao"`

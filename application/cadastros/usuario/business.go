@@ -2,7 +2,6 @@ package usuario
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/projetoBase/config/database"
 	"github.com/projetoBase/domain/cadastros/usuario"
@@ -39,39 +38,8 @@ func Listar(ctx context.Context, p *util.ParametrosRequisicao) (res *ResPag, err
 	return
 }
 
-// Buscar contém a lógica de negócio para buscar um usuario
-func Buscar(ctx context.Context, codigoBarras int64) (res *Res, err error) {
-	msgErrPadrao := "Erro ao buscar um usuario"
-	res = new(Res)
-
-	tx, err := database.NovaTransacao(ctx, true)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-	defer tx.Rollback()
-
-	repo := usuario.ObterRepo(tx)
-
-	req, err := repo.ConverterParausuario(res)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	req.CodigoBarras = &codigoBarras
-
-	if err = repo.Buscar(req); err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	if err = util.ConvertStruct(req, res); err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	return
-}
-
 // Adicionar contém a lógica de negócio para adicionar um novo usuario
-func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
+func Adicionar(ctx context.Context, req *Req) (res *Res, err error) {
 	var (
 		p            util.ParametrosRequisicao
 		msgErrPadrao = "Erro ao cadastrar novo usuario"
@@ -79,44 +47,43 @@ func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
 
 	tx, err := database.NovaTransacao(ctx, false)
 	if err != nil {
-		return id, oops.Wrap(err, msgErrPadrao)
+		return nil, oops.Wrap(err, msgErrPadrao)
 	}
 	defer tx.Rollback()
 
 	repo := usuario.ObterRepo(tx)
-	dados, err := repo.ConverterParausuario(req)
+	dados, err := repo.ConverterParaUsuario(req)
 	if err != nil {
-		return id, oops.Wrap(err, msgErrPadrao)
+		return nil, oops.Wrap(err, msgErrPadrao)
 	}
-	// devemos verificar se já existe um registro com mesmo codigo de barras
+	// devemos verificar se já existe um registro com o mesmo email
 	p.Filtros = make(map[string][]string)
-	p.Filtros["codigo_barras"] = []string{strconv.FormatInt(*req.CodigoBarras, 10)}
+	p.Filtros["email"] = []string{*req.Email}
 	p.Total = true
 
 	lista, err := repo.Listar(&p)
 	if err != nil {
-		return id, oops.Wrap(err, msgErrPadrao)
+		return nil, oops.Wrap(err, msgErrPadrao)
 	}
 
 	if lista.Total != nil && *lista.Total > 0 {
-		return id, oops.NovoErr("Já existe um usuario com esse codigo de barras!")
+		return nil, oops.NovoErr("Já existe um usuario com esse email!")
 	}
 
 	if err = repo.Adicionar(dados); err != nil {
-		return id, oops.Wrap(err, msgErrPadrao)
+		return nil, oops.Wrap(err, msgErrPadrao)
 	}
 
 	if err = tx.Commit(); err != nil {
-		return id, oops.Wrap(err, msgErrPadrao)
+		return nil, oops.Wrap(err, msgErrPadrao)
 	}
 
-	id = dados.ID
-
+	res.ID = dados.ID
 	return
 }
 
 // Alterar contém a lógica de negócio para alterar um novo usuario
-func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
+func Alterar(ctx context.Context, usuario_id string, req *Req) (err error) {
 	var (
 		p            util.ParametrosRequisicao
 		msgErrPadrao = "Erro ao alterar usuario"
@@ -128,15 +95,18 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 	defer tx.Rollback()
 	repo := usuario.ObterRepo(tx)
 
-	dados, err := repo.ConverterParausuario(req)
+	dados, err := repo.ConverterParaUsuario(req)
 	if err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 
-	dados.CodigoBarras = &codigoBarras
-	// devemos verificar se já existe um registro com o mesmo codigo de barras
+	// no caso de alteração de nome
+	//
+	// verificar o id na url com o email passado
+
+	// devemos verificar se já existe um registro com o mesmo email
 	p.Filtros = make(map[string][]string)
-	p.Filtros["codigo_barras"] = []string{strconv.FormatInt(*req.CodigoBarras, 10)}
+	p.Filtros["email"] = []string{*req.Email}
 
 	lista, err := repo.Listar(&p)
 	if err != nil {
@@ -144,9 +114,8 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 	}
 
 	if len(lista.Dados) > 0 {
-		if lista.Dados[0].CodigoBarras != &codigoBarras{
-			return oops.NovoErr("Já existe um usuario com esse codigo de barras!")
-		}
+		// comparar o email passado no body com o email original do usuario que vai ser retornado pelo id
+		return oops.NovoErr("Já existe um usuario com esse email!")
 	}
 
 	if err = repo.Alterar(dados); err != nil {
@@ -161,7 +130,7 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 }
 
 // Remover contém a lógica de negócio para remover um novo usuario
-func Remover(ctx context.Context, codigoBarras int64) (err error) {
+func Remover(ctx context.Context, email string) (err error) {
 	msgErrPadrao := "Erro ao remover usuario"
 
 	tx, err := database.NovaTransacao(ctx, false)
@@ -172,39 +141,13 @@ func Remover(ctx context.Context, codigoBarras int64) (err error) {
 
 	repo := usuario.ObterRepo(tx)
 
-	if err = repo.Remover(codigoBarras); err != nil {
+	if err = repo.Remover(email); err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 
 	if err = tx.Commit(); err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
-
-	return
-}
-
-// Total contém a lógica de negócio para buscar o total de uma listagem
-func Total(ctx context.Context, p *util.ParametrosRequisicao) (res *ResPag, err error) {
-	msgErrPadrao := "Erro ao listar um usuario"
-
-	res = new(ResPag)
-
-	tx, err := database.NovaTransacao(ctx, true)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-	defer tx.Rollback()
-	repo := usuario.ObterRepo(tx)
-
-	p.Filtros = make(map[string][]string)
-	p.Total = true
-
-	listausuario, err := repo.Listar(p)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	res.Total, res.Prox = listausuario.Total, listausuario.Prox
 
 	return
 }

@@ -1,16 +1,15 @@
-package produto
+package usuario
 
 import (
-	"github.com/projetoBase/infrastructure/persistence/cadastros/produto"
+	"github.com/projetoBase/infrastructure/persistence/cadastros/usuario"
 	"github.com/projetoBase/util"
 )
 
-// IProduto define uma interface para os metodos de acesso à camada de dados
-type IProduto interface {
-	Listar(p *util.ParametrosRequisicao) (*produto.ProdutoPag, error)
-	Buscar(req *produto.Produto) error
-	Adicionar(req *produto.Produto) error
-	Alterar(req *produto.Produto) error
-	Remover(codigoBarras int64) error
-	ConverterParaProduto(data interface{}) (*produto.Produto, error)
+// IUsuario define uma interface para os metodos de acesso à camada de dados
+type IUsuario interface {
+	Listar(p *util.ParametrosRequisicao) (*usuario.UsuarioPag, error)
+	Adicionar(req *usuario.Usuario) error
+	Alterar(req *usuario.Usuario) error
+	Remover(email string) error
+	ConverterParaUsuario(data interface{}) (*usuario.Usuario, error)
 }

@@ -27,17 +27,6 @@ func listar(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-// buscar - busca um produto usando como parametro o codigo de barras
-func buscar(c *gin.Context) {
-	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
-
-	res, err := produto.Buscar(c, int64(codigoBarras))
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-	c.JSON(http.StatusOK, res)
-}
 
 // adicionar - adiciona um produto
 func adicionar(c *gin.Context) {
@@ -70,7 +59,8 @@ func alterar(c *gin.Context) {
 		return
 	}
 
-	if err := produto.Alterar(c, int64(codigoBarras), &req); err != nil {
+	req.CodigoBarras = util.PonteiroInt64(int64(codigoBarras))
+	if err := produto.Alterar(c, &req); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
@@ -91,21 +81,4 @@ func remover(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNoContent, nil)
-}
-
-// total - busca o total de produtos em uma listagem
-func total(c *gin.Context) {
-
-	p, err := util.ParseParams(c)
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-	res, err := produto.Total(c, &p)
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-
-	c.JSON(http.StatusNoContent, res)
 }

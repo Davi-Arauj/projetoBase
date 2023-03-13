@@ -7,7 +7,6 @@ type Req struct {
 	Nome             *string    `json:"nome" binding:"required,gte=1" minLength:"1" codinome:"nome"`
 	Senha            *string    `json:"senha" codinome:"senha"`
 	Cpf              *string    `json:"cpf" codinome:"cpf"`
-	Hash             *string    `json:"hash" codinome:"hash"`
 	Fone             *int64     `json:"fone" minLength:"8" codinome:"fone"`
 	Email            *string    `json:"email" codinome:"email"`
 	Data_atualizacao *time.Time `json:"data_atualizacao" codinome:"data_atualizacao"`
@@ -20,7 +19,6 @@ type Res struct {
 	Nome             *string    `json:"nome" binding:"required,gte=1" minLength:"1" codinome:"nome"`
 	Senha            *string    `json:"senha" codinome:"senha"`
 	Cpf              *string    `json:"cpf,omitempty" codinome:"cpf"`
-	Hash             *string    `json:"hash,omitempty" codinome:"hash"`
 	Fone             *int64     `json:"fone" minLength:"8" codinome:"fone"`
 	Email            *string    `json:"email" codinome:"email"`
 	Data_atualizacao *time.Time `json:"data_atualizacao" codinome:"data_atualizacao"`

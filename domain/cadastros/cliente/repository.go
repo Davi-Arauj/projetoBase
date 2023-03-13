@@ -23,11 +23,6 @@ func (r *repositorio) Listar(p *util.ParametrosRequisicao) (*cliente.ClientePag,
 	return r.pg.Listar(p)
 }
 
-// Buscar é um gerenciador de fluxo de dados para buscar um cliente no banco de dados
-func (r *repositorio) Buscar(req *cliente.Cliente) error {
-	return r.pg.Buscar(req)
-}
-
 // Adicionar é um gerenciador de fluxo de dados para adicionar um cliente no banco de dados
 func (r *repositorio) Adicionar(req *cliente.Cliente) error {
 	return r.pg.Adicionar(req)
@@ -39,8 +34,8 @@ func (r *repositorio) Alterar(req *cliente.Cliente) error {
 }
 
 // Remover é um gerenciador de fluxo de dados para remover um cliente no banco de dados
-func (r *repositorio) Remover(codigoBarras int64) error {
-	return r.pg.Remover(codigoBarras)
+func (r *repositorio) Remover(email string) error {
+	return r.pg.Remover(email)
 }
 
 // ConverterParaCliente converte uma requisição em uma estrutura de cliente para acesso à camada de dados

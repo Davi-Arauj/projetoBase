@@ -26,18 +26,6 @@ func listar(c *gin.Context) {
 	c.JSON(200, res)
 }
 
-// buscar - busca um produto_venda usando como parametro o codigo de barras
-func buscar(c *gin.Context) {
-	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
-
-	res, err := produto_venda.Buscar(c, int64(codigoBarras))
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-	c.JSON(200, res)
-}
-
 // adicionar - adiciona um produto_venda
 func adicionar(c *gin.Context) {
 	var req produto_venda.Req
@@ -59,17 +47,12 @@ func adicionar(c *gin.Context) {
 func alterar(c *gin.Context) {
 	var req produto_venda.Req
 
-	codigoBarras, err := strconv.Atoi(c.Param("codigo_barras"))
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
 
-	if err := produto_venda.Alterar(c, int64(codigoBarras), &req); err != nil {
+	if err := produto_venda.Alterar(c, &req); err != nil {
 		oops.DefinirErro(err, c)
 		return
 	}
@@ -90,21 +73,4 @@ func remover(c *gin.Context) {
 	}
 
 	c.JSON(204, nil)
-}
-
-// total - busca o total de produto_vendas em uma listagem
-func total(c *gin.Context) {
-
-	p, err := util.ParseParams(c)
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-	res, err := produto_venda.Total(c, &p)
-	if err != nil {
-		oops.DefinirErro(err, c)
-		return
-	}
-
-	c.JSON(200, res)
 }

@@ -2,7 +2,6 @@ package cliente
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/projetoBase/config/database"
 	"github.com/projetoBase/domain/cadastros/cliente"
@@ -39,39 +38,8 @@ func Listar(ctx context.Context, p *util.ParametrosRequisicao) (res *ResPag, err
 	return
 }
 
-// Buscar contém a lógica de negócio para buscar um cliente
-func Buscar(ctx context.Context, codigoBarras int64) (res *Res, err error) {
-	msgErrPadrao := "Erro ao buscar um cliente"
-	res = new(Res)
-
-	tx, err := database.NovaTransacao(ctx, true)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-	defer tx.Rollback()
-
-	repo := cliente.ObterRepo(tx)
-
-	req, err := repo.ConverterParaCliente(res)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	req.CodigoBarras = &codigoBarras
-
-	if err = repo.Buscar(req); err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	if err = util.ConvertStruct(req, res); err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	return
-}
-
 // Adicionar contém a lógica de negócio para adicionar um novo cliente
-func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
+func Adicionar(ctx context.Context, req *Req) (id *string, err error) {
 	var (
 		p            util.ParametrosRequisicao
 		msgErrPadrao = "Erro ao cadastrar novo cliente"
@@ -88,9 +56,9 @@ func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
 	if err != nil {
 		return id, oops.Wrap(err, msgErrPadrao)
 	}
-	// devemos verificar se já existe um registro com mesmo codigo de barras
+	// devemos verificar se já existe um registro com o mesmo email
 	p.Filtros = make(map[string][]string)
-	p.Filtros["codigo_barras"] = []string{strconv.FormatInt(*req.CodigoBarras, 10)}
+	p.Filtros["email"] = []string{*req.Email}
 	p.Total = true
 
 	lista, err := repo.Listar(&p)
@@ -99,7 +67,7 @@ func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
 	}
 
 	if lista.Total != nil && *lista.Total > 0 {
-		return id, oops.NovoErr("Já existe um cliente com esse codigo de barras!")
+		return id, oops.NovoErr("Já existe um cliente com esse email!")
 	}
 
 	if err = repo.Adicionar(dados); err != nil {
@@ -116,7 +84,7 @@ func Adicionar(ctx context.Context, req *Req) (id *int64, err error) {
 }
 
 // Alterar contém a lógica de negócio para alterar um novo cliente
-func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
+func Alterar(ctx context.Context, clienteID string, req *Req) (err error) {
 	var (
 		p            util.ParametrosRequisicao
 		msgErrPadrao = "Erro ao alterar cliente"
@@ -133,10 +101,10 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 
-	dados.CodigoBarras = &codigoBarras
-	// devemos verificar se já existe um registro com o mesmo codigo de barras
+	dados.ID = &clienteID
+	// devemos verificar se já existe um registro com o mesmo email
 	p.Filtros = make(map[string][]string)
-	p.Filtros["codigo_barras"] = []string{strconv.FormatInt(*req.CodigoBarras, 10)}
+	p.Filtros["email"] = []string{*req.Email}
 
 	lista, err := repo.Listar(&p)
 	if err != nil {
@@ -144,8 +112,8 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 	}
 
 	if len(lista.Dados) > 0 {
-		if lista.Dados[0].CodigoBarras != &codigoBarras{
-			return oops.NovoErr("Já existe um cliente com esse codigo de barras!")
+		if lista.Dados[0].ID != &clienteID {
+			return oops.NovoErr("Já existe um cliente com esse email!")
 		}
 	}
 
@@ -161,7 +129,7 @@ func Alterar(ctx context.Context, codigoBarras int64, req *Req) (err error) {
 }
 
 // Remover contém a lógica de negócio para remover um novo cliente
-func Remover(ctx context.Context, codigoBarras int64) (err error) {
+func Remover(ctx context.Context, clienteID string) (err error) {
 	msgErrPadrao := "Erro ao remover cliente"
 
 	tx, err := database.NovaTransacao(ctx, false)
@@ -172,39 +140,13 @@ func Remover(ctx context.Context, codigoBarras int64) (err error) {
 
 	repo := cliente.ObterRepo(tx)
 
-	if err = repo.Remover(codigoBarras); err != nil {
+	if err = repo.Remover(clienteID); err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
 
 	if err = tx.Commit(); err != nil {
 		return oops.Wrap(err, msgErrPadrao)
 	}
-
-	return
-}
-
-// Total contém a lógica de negócio para buscar o total de uma listagem
-func Total(ctx context.Context, p *util.ParametrosRequisicao) (res *ResPag, err error) {
-	msgErrPadrao := "Erro ao listar um cliente"
-
-	res = new(ResPag)
-
-	tx, err := database.NovaTransacao(ctx, true)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-	defer tx.Rollback()
-	repo := cliente.ObterRepo(tx)
-
-	p.Filtros = make(map[string][]string)
-	p.Total = true
-
-	listacliente, err := repo.Listar(p)
-	if err != nil {
-		return res, oops.Wrap(err, msgErrPadrao)
-	}
-
-	res.Total, res.Prox = listacliente.Total, listacliente.Prox
 
 	return
 }

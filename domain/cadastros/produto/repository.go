@@ -23,11 +23,6 @@ func (r *repositorio) Listar(p *util.ParametrosRequisicao) (*produto.ProdutoPag,
 	return r.pg.Listar(p)
 }
 
-// Buscar é um gerenciador de fluxo de dados para buscar um produto no banco de dados
-func (r *repositorio) Buscar(req *produto.Produto) error {
-	return r.pg.Buscar(req)
-}
-
 // Adicionar é um gerenciador de fluxo de dados para adicionar um produto no banco de dados
 func (r *repositorio) Adicionar(req *produto.Produto) error {
 	return r.pg.Adicionar(req)

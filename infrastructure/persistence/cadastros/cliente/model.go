@@ -4,7 +4,7 @@ import "time"
 
 // Cliente modela uma resposta para listagem e busca de clientes
 type Cliente struct {
-	ID              *int64     `sql:"id" codinome:"id"`
+	ID              *string     `sql:"id" codinome:"id"`
 	Nome            *string    `sql:"nome" codinome:"nome"`
 	Email           *string    `sql:"email" codinome:"email"`
 	Cpf             *string    `sql:"cpf" codinome:"cpf"`
